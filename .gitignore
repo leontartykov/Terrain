@@ -1,0 +1,5 @@
+src/build/
+.out
+.exe
+src/build-ppo_cg_course-Desktop-Release
+src/build-ppo_cg_course-Desktop-Debug
