@@ -22,9 +22,9 @@ public:
     void set_x(T x);
     void set_y(T y);
     void set_z(T z);
-    Point3D<T> &operator *= (double scale);
-    Point3D<T> &operator += (double scale);
-    Point3D<T> &operator -= (double scale);
+    Point3D<T> &operator *= (Point3D<T> &point);
+    Point3D<T> &operator += (Point3D<T> &point);
+    Point3D<T> &operator -= (Point3D<T> &point);
 
     void output_point();
 };

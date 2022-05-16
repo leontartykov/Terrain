@@ -59,29 +59,29 @@ void Point3D<T>::output_point(){
 }
 
 template <typename T>
-Point3D<T> &Point3D<T>::operator *= (double scale)
+Point3D<T> &Point3D<T>::operator *= (Point3D<T> &point)
 {
-    _x *= scale;
-    _y *= scale;
-    _z *= scale;
+    _x *= point.get_x();
+    _y *= point.get_y();
+    _z *= point.get_z();
     return *this;
 }
 
 template <typename T>
-Point3D<T> &Point3D<T>::operator += (double scale)
+Point3D<T> &Point3D<T>::operator += (Point3D<T> &point)
 {
-    _x += scale;
-    _y += scale;
-    _z += scale;
+    _x += point.get_x();
+    _y += point.get_y();
+    _z += point.get_z();
     return *this;
 }
 
 template <typename T>
-Point3D<T> &Point3D<T>::operator -= (double scale)
+Point3D<T> &Point3D<T>::operator -= (Point3D<T> &point)
 {
-    _x -= scale;
-    _y -= scale;
-    _z -= scale;
+    _x -= point.get_x();
+    _y -= point.get_y();
+    _z -= point.get_z();
     return *this;
 }
 

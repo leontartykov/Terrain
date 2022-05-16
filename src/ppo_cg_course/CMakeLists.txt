@@ -23,7 +23,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(${PROJECT_NAME}
-    main.cpp
+    core/main.cpp
 
     #core/data_access/data_access_base.h
     #core/data_access/data_access_file/data_access_file_base.h
