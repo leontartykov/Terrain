@@ -34,10 +34,15 @@ add_executable(${PROJECT_NAME}
     #core/data_access/data_access_image/data_access_image_bmp.h
     #core/data_access/data_access_image/data_access_image_bmp.hpp
     #core/data_access/data_access_image/bmp_structure.h
-
     core/geometry/point/point_base.h
     core/geometry/point/point_3d.h
     core/geometry/point/point_3d.hpp
+
+    core/geometry/vector/vector_3d.h
+    core/geometry/vector/vector_3d.hpp
+    core/heightmap/base_noise.h
+    core/heightmap/perlin_noise/perlin_original.h
+    core/heightmap/perlin_noise/perlin_original.hpp
 )
 
 
@@ -49,6 +54,8 @@ add_executable(
   #unit_tests/data_access/tests_file.cpp
   #unit_tests/data_access/tests_image.cpp
   unit_tests/tests_point_3d.cpp
+  unit_tests/tests_vector_3d.cpp
+  unit_tests/test_perlin_noise.cpp
 )
 target_link_libraries(
   unit_tests
