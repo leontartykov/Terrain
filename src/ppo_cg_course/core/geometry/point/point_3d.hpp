@@ -85,4 +85,14 @@ Point3D<T> &Point3D<T>::operator -= (Point3D<T> &point)
     return *this;
 }
 
+template <typename T>
+void swap_points(Point3D<T> &point_1, Point3D<T> &point_2)
+{
+    Point3D<T> temp_point;
+
+    temp_point.set_point(point_1.get_x(), point_1.get_y(), 0);
+    point_1.set_point(point_2.get_x(), point_2.get_y(), 0);
+    point_2.set_point(temp_point.get_x(), temp_point.get_y(), 0);
+}
+
 #endif

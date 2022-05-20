@@ -1,13 +1,13 @@
 #ifndef _POINT_3D_H_
 #define _POINT_3D_H_
 
+#include <iostream>
+
 template <typename T>
 class Point3D
 {
 private:
-    T _x;
-    T _y;
-    T _z;
+    T _x, _y, _z;
 
 public:
     Point3D();
@@ -28,5 +28,8 @@ public:
 
     void output_point();
 };
+
+template <typename T>
+void swap_points(Point3D<T> &point_1, Point3D<T> &point_2);
 
 #endif

@@ -42,4 +42,12 @@ void Point2D<T>::set_y(T y){
     _y = y;
 }
 
+template <typename T>
+void swap_values(T &value_1, T &value_2)
+{
+    T temp = value_1;
+    value_1 = value_2;
+    value_2 = temp;
+}
+
 #endif

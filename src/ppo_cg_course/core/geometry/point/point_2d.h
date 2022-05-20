@@ -18,4 +18,8 @@ class Point2D
         void set_x(T x);
         void set_y(T y);
 };
+
+template <typename T>
+void swap_values(T &value_1, T &value_2);
+
 #endif
