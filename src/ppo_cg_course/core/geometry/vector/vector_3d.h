@@ -24,6 +24,7 @@ class Vector3D
 
         Vector3D<T> operator / (double length);
         Vector3D<T> &operator /= (double length);
+        Vector3D<T> operator+ (Vector3D<T> &vector_2);
 
         double length();
 

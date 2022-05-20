@@ -58,6 +58,15 @@ Vector3D<T> &Vector3D<T>::operator /= (double length)
 }
 
 template <typename T>
+Vector3D<T> Vector3D<T>::operator+ (Vector3D<T> &vector_2)
+{
+    Vector3D<T> vector;
+    vector.set_vector(this->_x + vector_2._x, this->_y + vector_2._y, this->_z + vector_2._z);
+
+    return vector;
+}
+
+template <typename T>
 void Vector3D<T>::output(){
     std::cout << "(" << _x << ", " << _y << ", " << _z << ") ";
 }
