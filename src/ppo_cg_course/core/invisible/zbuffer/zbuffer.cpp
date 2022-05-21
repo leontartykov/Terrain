@@ -494,3 +494,16 @@ void find_depth_pixels(std::vector<std::vector<double>> &zbuffer_matrix,
         }
     }
 }
+
+bool is_equal_colors(QColor color_1, QColor color_2)
+{
+    bool is_equal = false;
+
+    if (color_1.red() == color_2.red() && color_1.green() == color_2.green() &&
+        color_1.blue() == color_2.blue())
+    {
+        is_equal = true;
+    }
+
+    return is_equal;
+}

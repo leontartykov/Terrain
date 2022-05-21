@@ -70,4 +70,6 @@ void find_depth_pixels(std::vector<std::vector<double>> &zbuffer_matrix,
 double find_depth_pixel(int rasterize_x, int rasterize_y,
                                        plane_coeffs_t &plane_coeffs, double zbuffer_value);
 
+bool is_equal_colors(QColor color_1, QColor color_2);
+
 #endif
