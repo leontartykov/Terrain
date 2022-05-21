@@ -5,6 +5,8 @@
 #include "../../invisible/zbuffer/zbuffer.hpp"
 #include "../../geometry/triangle/triangle_3d.hpp"
 #include "../../geometry/vector/vector_3d.h"
+#include "../../data_access/data_access_image/data_access_image_bmp.hpp"
+#include "../../invisible/zbuffer/zbuffer.hpp"
 
 /*!
  * \brief Terrain::Terrain
@@ -344,6 +346,13 @@ void Terrain::clear_normals()
     _normals_up_triangles.clear();
     _normals_down_triangles.clear();
     _shading_normals.clear();
+}
+
+int Terrain::write_to_file_bmp(std::string &path, ZBuffer &zbuffer)
+{
+    DataAccessFileBMP file_bmp;
+    int error = file_bmp.create(path, zbuffer.get_color_matrix());
+    return error;
 }
 
 

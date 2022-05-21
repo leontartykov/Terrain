@@ -86,21 +86,6 @@ bool ZBuffer::is_background(int index_i, int index_j)
  * \return true if success, else false
  */
 
-bool ZBuffer::is_equal_colors(int index_i, int index_j, QColor color)
-{
-    bool is_equal = false;
-    int r_matrix = 0, g_matrix = 0, b_matrix = 0;
-    _color_matrix[index_i][index_j].getRgb(&r_matrix, &g_matrix, &b_matrix);
-
-    int r = 0, g = 0, b = 0;
-    color.getRgb(&r, &g, &b);
-    if (r_matrix == r && g_matrix == g && b_matrix == b){
-        is_equal = true;
-    }
-
-    return is_equal;
-}
-
 void ZBuffer::set_color(int index_i, int index_j, QRgb color){
     _color_matrix[index_i][index_j].setRgb(color);
 }
@@ -117,5 +102,10 @@ void ZBuffer::reset()
         }
     }
 }
+
+/*int ZBuffer::create_file_bmp(std::string &path)
+{
+
+}*/
 
 #endif

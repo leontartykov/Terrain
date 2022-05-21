@@ -46,6 +46,8 @@ class Terrain
         void find_all_normals();
         void find_average_normals_of_each_node();
         void clear_normals();
+
+        int write_to_file_bmp(std::string &path, ZBuffer &zbuffer);
 };
 
 #endif
