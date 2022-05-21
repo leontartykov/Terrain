@@ -18,11 +18,7 @@ TEST(tests_zbuffer_is_background_color, positive)
 
 TEST(tests_zbuffer_is_equal_colors, positive)
 {
-    ZBuffer zbuffer(3,3);
-    int index_i = 0, index_j = 0;
-    zbuffer.set_color(index_i, index_j, qRgb(128, 128, 128));
-
-    bool result = zbuffer.is_equal_colors(index_i, index_j, qRgb(128, 128, 128));
+    bool result = is_equal_colors(qRgb(128, 128, 128), qRgb(128, 128, 128));
     EXPECT_EQ(true, result);
 }
 
