@@ -1,40 +1,17 @@
 #include <gtest/gtest.h>
 
-#include "../core/data_access/users/users.hpp"
+#include "../core/data_access/users/admin/admin.h"
 
 TEST(tests_users_add_user, positive)
 {
     int result = 0;
-    Admin admin;
-    admin.connect_to_db();
+    std::unique_ptr<Admin> admin(new Admin());
 
-    std::string user = "user_1";
-    int error = admin.add_user(user);
-
-    EXPECT_EQ(error, result);
-}
-
-TEST(tests_users_block_user, positive)
-{
-    int result = 0;
-    Admin admin;
-    admin.connect_to_db();
-
-    std::string user = "user_1";
-    int error = admin.block_user(user);
-
-    EXPECT_EQ(error, result);
-}
-
-TEST(tests_users_unblock_user, positive)
-{
-    int result = 0;
-    Admin admin;
-    admin.connect_to_db();
-
-    std::string user = "user_1";
-    admin.block_user(user);
-    int error = admin.unblock_user(user);
+    users_t user = {.login = "user_1",
+                              .password = "ur21",
+                              .is_blocked=false,
+                              .is_deleted=false};
+    int error = admin->add_user(user);
 
     EXPECT_EQ(error, result);
 }
@@ -42,11 +19,44 @@ TEST(tests_users_unblock_user, positive)
 TEST(tests_users_delete_user, positive)
 {
     int result = 0;
-    Admin admin;
-    admin.connect_to_db();
+    std::unique_ptr<Admin> admin(new Admin());
 
-    std::string user = "user_1";
-    int error = admin.delete_user(user);
+    users_t user = {.login = "user_1",
+                              .password = "ur21",
+                              .is_blocked=false,
+                              .is_deleted=false};
+    int error = admin->delete_user(user);
 
     EXPECT_EQ(error, result);
 }
+
+
+TEST(tests_users_lock_user, positive)
+{
+    int result = 0;
+    std::unique_ptr<Admin> admin(new Admin());
+
+    users_t user = {.login = "user_1",
+                              .password = "ur21",
+                              .is_blocked=false,
+                              .is_deleted=false};
+    int error = admin->lock_user(user);
+
+    EXPECT_EQ(error, result);
+}
+
+TEST(tests_users_unlock_user, positive)
+{
+    int result = 0;
+    std::unique_ptr<Admin> admin(new Admin());
+
+    users_t user = {.login = "user_1",
+                              .password = "ur21",
+                              .is_blocked=false,
+                              .is_deleted=false};
+    int error = admin->unlock_user(user);
+
+    EXPECT_EQ(error, result);
+}
+
+
