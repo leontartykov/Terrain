@@ -8,16 +8,17 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "-Wall -fPIC -std=c++11 -DQT_NO_VERSION_TAGGING")
+set(CMAKE_CXX_FLAGS "-Wall -fPIC -std=c++14 -DQT_NO_VERSION_TAGGING")
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-include_directories(${Qt5Gui_INCLUDE_DIRS})
+include_directories(${Qt5Gui_INCLUDE_DIRS}, ${PostgreSQL_INCLUDE_DIRS})
 
 add_executable(
     core_files
+
     core/main.cpp
 
     core/geometry/point/point_base.h
@@ -52,8 +53,43 @@ add_executable(
 
     core/geometry/plane/plane.h
     core/geometry/plane/plane.cpp
-)
 
+    core/data_access/data_access_base.h
+    core/data_access/data_access_file/data_access_file_base.h
+    core/data_access/data_access_file/data_access_file.h
+    core/data_access/data_access_file/data_access_file.hpp
+
+    core/data_access/data_access_image/data_access_image_base.h
+    core/data_access/data_access_image/data_access_image_bmp.h
+    core/data_access/data_access_image/data_access_image_bmp.hpp
+    core/data_access/data_access_image/bmp_structure.h
+
+    core/data_access/users/users_struct.h
+    core/data_access/users/base_user.h
+    core/data_access/users/base_user.cpp
+
+    core/data_access/users/user/users.h
+    core/data_access/users/user/users.cpp
+
+    core/data_access/users/admin/admin.h
+    core/data_access/users/admin/admin.cpp
+
+    core/entry/entry.h
+    core/entry/entry.cpp
+
+    core/entry/app_command/app_command_base.h
+    core/entry/app_command/app_command.h
+    core/entry/app_command/app_command.hpp
+    core/entry/app_command/app_command.cpp
+
+    core/entry/app_facade/app_facade.h
+    core/entry/app_facade/app_facade.cpp
+
+    core/entry/user_fabric/user_creator.h
+    core/entry/user_fabric/user_creator.hpp
+    core/entry/user_fabric/user_fabric.h
+    core/entry/user_fabric/user_solution.hpp
+)
 
 enable_testing()
 
@@ -72,20 +108,46 @@ add_executable(
   unit_tests/tests_perlin_noise.cpp
   unit_tests/tests_zbuffer.cpp
   unit_tests/tests_plane.cpp
+  unit_tests/tests_file.cpp
+  unit_tests/tests_image.cpp
+  unit_tests/tests_users.cpp
 
   core/geometry/plane/plane.h
   core/geometry/plane/plane.cpp
 
   core/invisible/zbuffer/zbuffer.h
   core/invisible/zbuffer/zbuffer.cpp
+
+  core/data_access/users/user/users.h
+  core/data_access/users/user/users.cpp
+
+  core/data_access/users/admin/admin.h
+  core/data_access/users/admin/admin.cpp
+
+  core/entry/entry.h
+  core/entry/entry.cpp
+
+  core/entry/app_command/app_command_base.h
+  core/entry/app_command/app_command.h
+  core/entry/app_command/app_command.hpp
+  core/entry/app_command/app_command.cpp
+
+  core/entry/app_facade/app_facade.h
+  core/entry/app_facade/app_facade.cpp
+
+  core/entry/user_fabric/user_creator.h
+  core/entry/user_fabric/user_creator.hpp
+  core/entry/user_fabric/user_fabric.h
+  core/entry/user_fabric/user_solution.hpp
 )
 
 
 include(GoogleTest)
 gtest_discover_tests(unit_all_tests)
 
-target_link_libraries(unit_all_tests Qt5::Gui
+target_link_libraries(unit_all_tests Qt5::Gui -lpqxx -lpq
                                 gtest gtest_main)
-target_link_libraries(core_files Qt5::Gui)
+target_link_libraries(core_files Qt5::Gui -lpqxx -lpq)
+#target_link_libraries(entry_program Qt5::Gui -lpqxx -lpq)
 
 
