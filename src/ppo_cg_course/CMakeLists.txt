@@ -54,7 +54,7 @@ add_executable(
     core/geometry/plane/plane.h
     core/geometry/plane/plane.cpp
 
-    core/data_access/data_access_base.h
+    #core/data_access/data_access_base.h
     core/data_access/data_access_file/data_access_file_base.h
     core/data_access/data_access_file/data_access_file.h
     core/data_access/data_access_file/data_access_file.hpp
