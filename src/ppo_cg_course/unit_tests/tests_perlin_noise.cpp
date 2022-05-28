@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../core/heightmap/perlin_noise/perlin_original.hpp"
+#include "../core/heightmap/perlin_noise/perlin_original.h"
 
 TEST(tests_get_perlin_heightmap_value, positive)
 {

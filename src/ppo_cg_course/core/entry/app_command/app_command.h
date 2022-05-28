@@ -6,6 +6,8 @@
 
 class LaunchAppCmd: public BaseAppCommand
 {
+    private:
+        int _execute();
     public:
         LaunchAppCmd() = default;
         ~LaunchAppCmd() = default;

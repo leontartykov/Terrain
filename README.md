@@ -65,5 +65,5 @@
 ![](images/mvc.svg)
 
 ## Диаграмма классов для технологического UI
-![](images/techno.svg)
+![](images/techno_ui.svg)
 

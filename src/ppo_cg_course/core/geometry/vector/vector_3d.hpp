@@ -1,5 +1,4 @@
 #include "vector_3d.h"
-#include "../point/point_3d.h"
 
 template <typename T>
 Vector3D<T>::Vector3D(): _x{0}, _y{0}, _z{0}{

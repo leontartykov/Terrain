@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include "../core/data_access/data_access_image/data_access_image_bmp.hpp"
+#include "../core/data_access/data_access_image/data_access_image_bmp.h"
 
 TEST(create_bmp_file_test, positive) {
     DataAccessFileBMP file_bmp;

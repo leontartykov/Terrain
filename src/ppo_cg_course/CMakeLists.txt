@@ -36,11 +36,16 @@ add_executable(
     core/heightmap/base_noise.h
     core/heightmap/perlin_noise/perlin_original.h
     core/heightmap/perlin_noise/perlin_original.hpp
+    core/heightmap/perlin_noise/perlin_original.cpp
 
     core/object/object_base.h
     core/object/terrain/base_terrain.h
     core/object/terrain/terrain.h
     core/object/terrain/terrain.hpp
+    core/object/terrain/terrain.cpp
+
+    core/object/light/light.h
+    core/object/light/light.cpp
 
     core/invisible/zbuffer/zbuffer_base.h
     core/invisible/zbuffer/zbuffer.h
@@ -62,6 +67,7 @@ add_executable(
     core/data_access/data_access_image/data_access_image_base.h
     core/data_access/data_access_image/data_access_image_bmp.h
     core/data_access/data_access_image/data_access_image_bmp.hpp
+    core/data_access/data_access_image/data_access_image_bmp.cpp
     core/data_access/data_access_image/bmp_structure.h
 
     core/data_access/users/users_struct.h
@@ -89,6 +95,11 @@ add_executable(
     core/entry/user_fabric/user_creator.hpp
     core/entry/user_fabric/user_fabric.h
     core/entry/user_fabric/user_solution.hpp
+
+    core/gui/main_window.cpp
+    core/gui/main_window.h
+    core/gui/mainwindow.ui
+    core/gui/ui_mainwindow.h
 )
 
 enable_testing()
@@ -112,11 +123,58 @@ add_executable(
   unit_tests/tests_image.cpp
   unit_tests/tests_users.cpp
 
+  core/geometry/point/point_base.h
+  core/geometry/point/point_3d.h
+  core/geometry/point/point_3d.hpp
+  core/geometry/point/point_3d.cpp
+
+  core/geometry/point/point_2d.h
+  core/geometry/point/point_2d.hpp
+  core/geometry/point/point_2d.cpp
+
+  core/geometry/vector/vector_3d.h
+  core/geometry/vector/vector_3d.hpp
+
+  core/heightmap/base_noise.h
+  core/heightmap/perlin_noise/perlin_original.h
+  core/heightmap/perlin_noise/perlin_original.hpp
+  core/heightmap/perlin_noise/perlin_original.cpp
+
+  core/object/object_base.h
+  core/object/terrain/base_terrain.h
+  core/object/terrain/terrain.h
+  core/object/terrain/terrain.hpp
+  core/object/terrain/terrain.cpp
+
+  core/object/light/light.h
+  core/object/light/light.cpp
+
+  core/invisible/zbuffer/zbuffer_base.h
+  core/invisible/zbuffer/zbuffer.h
+  core/invisible/zbuffer/zbuffer.hpp
+  core/invisible/zbuffer/zbuffer.cpp
+
+  core/geometry/triangle/triangle_3d.h
+  core/geometry/triangle/triangle_3d.hpp
+  core/geometry/triangle/triangle_3d.cpp
+
   core/geometry/plane/plane.h
   core/geometry/plane/plane.cpp
 
-  core/invisible/zbuffer/zbuffer.h
-  core/invisible/zbuffer/zbuffer.cpp
+  #core/data_access/data_access_base.h
+  core/data_access/data_access_file/data_access_file_base.h
+  core/data_access/data_access_file/data_access_file.h
+  core/data_access/data_access_file/data_access_file.hpp
+
+  core/data_access/data_access_image/data_access_image_base.h
+  core/data_access/data_access_image/data_access_image_bmp.h
+  core/data_access/data_access_image/data_access_image_bmp.hpp
+  core/data_access/data_access_image/data_access_image_bmp.cpp
+  core/data_access/data_access_image/bmp_structure.h
+
+  core/data_access/users/users_struct.h
+  core/data_access/users/base_user.h
+  core/data_access/users/base_user.cpp
 
   core/data_access/users/user/users.h
   core/data_access/users/user/users.cpp
@@ -139,15 +197,20 @@ add_executable(
   core/entry/user_fabric/user_creator.hpp
   core/entry/user_fabric/user_fabric.h
   core/entry/user_fabric/user_solution.hpp
+
+  core/gui/main_window.cpp
+  core/gui/main_window.h
+  core/gui/mainwindow.ui
+  core/gui/ui_mainwindow.h
 )
 
 
 include(GoogleTest)
 gtest_discover_tests(unit_all_tests)
 
-target_link_libraries(unit_all_tests Qt5::Gui -lpqxx -lpq
+target_link_libraries(unit_all_tests Qt5::Gui Qt5::Widgets -lpqxx -lpq
                                 gtest gtest_main)
-target_link_libraries(core_files Qt5::Gui -lpqxx -lpq)
+target_link_libraries(core_files Qt5::Gui Qt5::Widgets -lpqxx -lpq)
 #target_link_libraries(entry_program Qt5::Gui -lpqxx -lpq)
 
 
