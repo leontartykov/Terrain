@@ -4,3 +4,5 @@ src/build/
 src/build-ppo_cg_course-Desktop-Release
 src/build-ppo_cg_course-Desktop-Debug
 src/ppo_cg_course/.cmake/
+src/ppo_cg_course/Makefile
+src/ppo_cg_course/CMakeLists.txt.user
