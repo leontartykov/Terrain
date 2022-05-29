@@ -7,8 +7,8 @@
 class DataAccessFileBMP: BaseDataAccessImage
 {
     public:
-        DataAccessFileBMP();
-        ~DataAccessFileBMP();
+        DataAccessFileBMP() = default;
+        ~DataAccessFileBMP()  = default;
 
         virtual int create(std::string path, std::vector<std::vector<QColor>> &color_buffer) override;
         virtual void update() override;

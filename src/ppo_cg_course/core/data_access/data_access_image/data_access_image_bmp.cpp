@@ -1,12 +1,6 @@
 #include "data_access_image_bmp.h"
 #include "data_access_image_bmp.hpp"
 
-DataAccessFileBMP::DataAccessFileBMP(){
-}
-
-DataAccessFileBMP::~DataAccessFileBMP(){
-}
-
 int DataAccessFileBMP::create(std::string path, std::vector<std::vector<QColor>> &color_buffer){
     BITMAPFILEHEADER file_header;
     BITMAPV5HEADER file_header_info;

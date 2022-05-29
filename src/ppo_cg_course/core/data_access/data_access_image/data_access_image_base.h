@@ -11,7 +11,6 @@
 class BaseDataAccessImage
 {
     public:
-        BaseDataAccessImage() = default;
         virtual ~BaseDataAccessImage() = default;
 
         virtual int create(std::string path, std::vector<std::vector<QColor>> &color_buffer) = 0;
