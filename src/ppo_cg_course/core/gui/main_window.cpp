@@ -1,5 +1,7 @@
 #include "main_window.h"
 #include "./ui_mainwindow.h"
+#include "../scene/scene_commands/scene_command_base.h"
+#include "../scene/scene_commands/scene_commands.h"
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -10,6 +12,46 @@ MainWindow::MainWindow(QWidget *parent):
     scene = new QGraphicsScene(ui->graphicsView);
     view->setScene(scene);
     view->show();
+
+    QObject::connect(ui->spinbox_rotate_x, SIGNAL(valueChanged(int)), this, SLOT(rotate_terrain()));
+    QObject::connect(ui->spinbox_rotate_y, SIGNAL(valueChanged(int)), this, SLOT(rotate_terrain()));
+    QObject::connect(ui->spinbox_rotate_z, SIGNAL(valueChanged(int)), this, SLOT(rotate_terrain()));
+
+    QObject::connect(ui->spinbox_octaves, SIGNAL(valueChanged(int)), this, SLOT(change_noise_parametrs()));
+    QObject::connect(ui->spinbox_gain, SIGNAL(valueChanged(double)), this, SLOT(change_noise_parametrs()));
+    QObject::connect(ui->spinbox_lacunarity, SIGNAL(valueChanged(double)), this, SLOT(change_noise_parametrs()));
+    QObject::connect(ui->spinbox_seed, SIGNAL(valueChanged(int)), this, SLOT(change_noise_parametrs()));
+    QObject::connect(ui->spinbox_frequency, SIGNAL(valueChanged(double)), this, SLOT(change_noise_parametrs()));
+
+    QObject::connect(ui->spinbox_width_landscape, SIGNAL(valueChanged(int)), this, SLOT(change_noise_parametrs()));
+    QObject::connect(ui->spinbox_height_landscape, SIGNAL(valueChanged(int)), this, SLOT(change_noise_parametrs()));
+
+    QObject::connect(ui->spinbox_scale, SIGNAL(valueChanged(double)), this, SLOT(scale_landscape()));
+
+    meta_data_t scene_meta_data = {.octaves = ui->spinbox_octaves->value(),
+                                                .gain = ui->spinbox_gain->value(),
+                                                .lacunarity = ui->spinbox_lacunarity->value(),
+                                                .seed = ui->spinbox_seed->value(),
+                                                .frequency = ui->spinbox_frequency->value()};
+
+    rotate_t scene_rotate_angles = {.angle_x = ui->spinbox_rotate_x->value(),
+                                            .angle_y = ui->spinbox_rotate_y->value(),
+                                            .angle_z = ui->spinbox_rotate_z->value()};
+
+    Point3D<int> scene_point_light_position(ui->spinbox_light_position_x->value(),
+                                                           ui->spinbox_light_position_y->value(),
+                                                           ui->spinbox_light_position_z->value());
+    double scene_scale_coeff = ui->spinbox_scale->value();
+
+    all_scene_info scene_info = {
+        .scene_meta_data = scene_meta_data,
+        .scene_rotate_terrain_angles = scene_rotate_angles,
+        .scene_terrain_scale = scene_scale_coeff,
+        .scene_point_light_position = scene_point_light_position
+    };
+
+    _scene.build_scene(scene_info);
+    _scene.draw_scene(scene, view);
 }
 
 MainWindow::~MainWindow()
@@ -17,49 +59,101 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::init_terrain()
+void MainWindow::rotate_terrain()
 {
-    terrain.set_meta_config(ui->spinbox_octaves->value(), ui->spinbox_gain->value(), ui->spinbox_lacunarity->value(),
-                                                ui->spinbox_seed->value(), ui->spinbox_frequency->value());
-    terrain.set_rotate_angles(ui->spinbox_rotate_x->value(), ui->spinbox_rotate_y->value(), ui->spinbox_rotate_z->value());
+    std::cout << "rotate_angles.\n";
+    Terrain* terrain = _scene.get_terrain();
 
-    //qDebug() << "form_landscape.";
-    terrain.form_terrain();
+    rotate_t rotate_angles, rotate_angles_landscape = terrain->get_rotate_angles();
+    rotate_angles.angle_x = ui->spinbox_rotate_x->value() -  terrain->get_rotate_x();
+    rotate_angles.angle_y = ui->spinbox_rotate_y->value() - terrain->get_rotate_y();
+    rotate_angles.angle_z = ui->spinbox_rotate_z->value() - terrain->get_rotate_z();
 
-    //qDebug() << "find_all_landscapes.";
-    terrain.find_all_normals();
+    rotate_t new_angles = {
+        .angle_x = terrain->get_rotate_x() + rotate_angles.angle_x,
+        .angle_y = terrain->get_rotate_y() + rotate_angles.angle_y,
+        .angle_z = terrain->get_rotate_z() + rotate_angles.angle_z
+    };
 
-    //qDebug() << "find_average_normals_of_each_node().";
-    terrain.find_average_normals_of_each_node();
+    Point3D<int> scene_point_light_position(ui->spinbox_light_position_x->value(),
+                                                           ui->spinbox_light_position_y->value(),
+                                                           ui->spinbox_light_position_z->value());
+    terrain->set_rotate_angles(new_angles);
 
-    rotate_t rotate_angles;
-    rotate_angles.angle_x = ui->spinbox_rotate_x->value();
-    rotate_angles.angle_y = ui->spinbox_rotate_y->value();
-    rotate_angles.angle_z = ui->spinbox_rotate_z->value();
 
-    //qDebug() << "rotate_landscape.";
-    //landscape.rotate_landscape(rotate_angles);
+    ZBuffer *zbuffer = _scene.get_zbuffer();
+    zbuffer->reset();
 
-    double scale = ui->spinbox_scale->value();
-    //terrain.set_scale_landscape(scale);
-    //landscape.scale_landscape();
+    terrain->rotate_terrain(rotate_angles);
+    terrain->transform_points_to_screen();
+    terrain->remove_invisible_lines(*zbuffer, scene_point_light_position);
 
-    //qDebug() << "transform_points_to_screen.";
-    //terrain.transform_points_to_screen();
+    _scene.set_terrain(terrain);
+    _scene.set_zbuffer(zbuffer);
 
-    //qDebug() << "remove_invisible_lines.";
-    //terrain.remove_invisible_lines(zbuffer, scene, light.get_position());
-
-    //qDebug() << "draw_landscape.";
-    //landscape.draw_landscape(zbuffer, scene, view);
+    _scene.draw_scene(scene, view);
 }
 
-void MainWindow::init_light()
-{
-    int light_x = ui->spinbox_light_position_x->value(),
-         light_y = ui->spinbox_light_position_y->value(),
-         light_z = ui->spinbox_light_position_z->value();
 
-    light.set_position(light_x, light_y, light_z);
+void MainWindow::change_noise_parametrs()
+{
+    int width = ui->spinbox_width_landscape->value(), height = ui->spinbox_height_landscape->value();
+    ZBuffer *zbuffer = _scene.get_zbuffer();
+    Terrain* terrain = _scene.get_terrain();
+
+    zbuffer->reset();
+    terrain->clear();
+    terrain->change_size(width, height);
+
+    _scene.set_terrain(terrain);
+    _scene.set_zbuffer(zbuffer);
+
+    meta_data_t scene_meta_data = {.octaves = ui->spinbox_octaves->value(),
+                                                .gain = ui->spinbox_gain->value(),
+                                                .lacunarity = ui->spinbox_lacunarity->value(),
+                                                .seed = ui->spinbox_seed->value(),
+                                                .frequency = ui->spinbox_frequency->value()};
+
+    rotate_t scene_rotate_angles = {.angle_x = ui->spinbox_rotate_x->value(),
+                                            .angle_y = ui->spinbox_rotate_y->value(),
+                                            .angle_z = ui->spinbox_rotate_z->value()};
+
+    Point3D<int> scene_point_light_position(ui->spinbox_light_position_x->value(),
+                                                           ui->spinbox_light_position_y->value(),
+                                                           ui->spinbox_light_position_z->value());
+    double scene_scale_coeff = ui->spinbox_scale->value();
+
+    all_scene_info scene_info = {
+        .scene_meta_data = scene_meta_data,
+        .scene_rotate_terrain_angles = scene_rotate_angles,
+        .scene_terrain_scale = scene_scale_coeff,
+        .scene_point_light_position = scene_point_light_position
+    };
+
+    _scene.build_scene(scene_info);
+    _scene.draw_scene(scene, view);
+}
+
+
+void MainWindow::scale_landscape()
+{
+    Terrain* terrain = _scene.get_terrain();
+
+    ZBuffer *zbuffer = _scene.get_zbuffer();
+    zbuffer->reset();
+
+    double scene_scale_coeff = ui->spinbox_scale->value();
+    terrain->scale_terrain(scene_scale_coeff);
+    terrain->transform_points_to_screen();
+
+    Point3D<int> scene_point_light_position(ui->spinbox_light_position_x->value(),
+                                                           ui->spinbox_light_position_y->value(),
+                                                           ui->spinbox_light_position_z->value());
+
+    terrain->remove_invisible_lines(*zbuffer, scene_point_light_position);
+
+    _scene.set_terrain(terrain);
+    _scene.set_zbuffer(zbuffer);
+
+    _scene.draw_scene(scene, view);
 }

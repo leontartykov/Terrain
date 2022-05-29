@@ -13,6 +13,8 @@
 #include "../object/light/light.h"
 //#include "../invisible/zbuffer/zbuffer.hpp"
 #include "../scene/scene_facade/scene_facade.h"
+#include "../scene/scene.h"
+#include "../scene/scene_struct.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,22 +31,18 @@ class MainWindow: public QMainWindow
         QImage *image;
         QPixmap pixmap;
 
-        Terrain terrain;
-        PointLight light;
         std::shared_ptr<SceneFacade> _scene_facade;
+        Scene _scene;
 
      public:
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
-        void init_terrain();
-        void init_light();
 
      public slots:
-        /*void rotate_landscape();
+        void rotate_terrain();
         void change_noise_parametrs();
-        void change_size_noise();
-        void change_light_position();
-        void scale_landscape();*/
+
+        void scale_landscape();
 };
 
 #endif
