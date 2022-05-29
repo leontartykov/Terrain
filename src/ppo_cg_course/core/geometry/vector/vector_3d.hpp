@@ -96,8 +96,8 @@ Vector3D<T> find_normal(Point3D<T> point_1, Point3D<T> point_2, Point3D<T> point
 {
     Vector3D<T> normal_vector;
     Point3D<T> int_point_1(point_1.get_x(), point_1.get_y(), point_1.get_z());
-    Point3D<T> int_point_2(point_2.get_x(), point_2.get_y(), point_2.get_z());
-    Point3D<T> int_point_3(point_3.get_x(), point_3.get_y(), point_3.get_z());
+    Point3D<T> int_point_2(point_3.get_x(), point_2.get_y(), point_2.get_z());
+    Point3D<T> int_point_3(point_2.get_x(), point_3.get_y(), point_3.get_z());
 
     double vector_1_x = 0, vector_1_y = 0, vector_1_z = 0;
     double vector_2_x = 0, vector_2_y = 0, vector_2_z = 0;
