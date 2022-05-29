@@ -28,9 +28,9 @@ Triangle3D<T>::~Triangle3D(){
 template <typename T>
 void Triangle3D<T>::output(){
     std::cout << "[";
-    _triangle[0].output();
-    _triangle[1].output();
-    _triangle[2].output();
+    _triangle[0].output_point();
+    _triangle[1].output_point();
+    _triangle[2].output_point();
     std::cout << "]" << std::endl;
 }
 
