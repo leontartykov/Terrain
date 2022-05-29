@@ -41,7 +41,7 @@ int EntrySystem::enter_system(){
     user_info_t user_info;
     int error = 1;
 
-    while (error != 0)
+    while (error >= 0)
     {
         std::cout << "Вход в систему." << std::endl;
         try{
@@ -57,18 +57,17 @@ int EntrySystem::enter_system(){
         }
 
         error = this->_verify_user(user_info);
-    }
 
-    // возможно здесь лучше бы фабрику
-    if (user_info.login.compare("admin") == 0){
-        std::shared_ptr<Admin> admin(new Admin());
-        std::shared_ptr<BaseUser> user = admin;
-        user->do_action();
-    }
-    else{
-        std::shared_ptr<User> con_user(new User());
-        std::shared_ptr<BaseUser> user = con_user;
-        user->do_action();
+        if (user_info.login.compare("admin") == 0){
+            std::shared_ptr<Admin> admin(new Admin());
+            std::shared_ptr<BaseUser> user = admin;
+            error = user->do_action();
+        }
+        else{
+            std::shared_ptr<User> con_user(new User());
+            std::shared_ptr<BaseUser> user = con_user;
+            error = user->do_action();
+        }
     }
 
     return error;
