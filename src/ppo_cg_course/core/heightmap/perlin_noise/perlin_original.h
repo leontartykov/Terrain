@@ -9,17 +9,7 @@
 #include <ctime>
 
 #include "../base_noise.h"
-
-typedef struct meta_data meta_data_t;
-struct meta_data
-{
-    int octaves;
-    double gain;
-    double lacunarity;
-
-    int seed;
-    double frequency;
-};
+#include "perlin_noise_struct.h"
 
 class PerlinNoise: BaseNoise
 {
