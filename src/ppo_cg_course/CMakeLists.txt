@@ -38,11 +38,36 @@ add_executable(
     core/heightmap/perlin_noise/perlin_original.hpp
     core/heightmap/perlin_noise/perlin_original.cpp
 
+    core/heightmap/perlin_noise/perlin_noise_struct.h
+
     core/object/object_base.h
     core/object/terrain/base_terrain.h
     core/object/terrain/terrain.h
     core/object/terrain/terrain.hpp
     core/object/terrain/terrain.cpp
+
+    core/object/terrain/terrain_struct.h
+
+    core/object/terrain/terrain_facade/terrain_facade.h
+    core/object/terrain/terrain_facade/terrain_facade.cpp
+
+    core/scene/scene_commands/scene_command_base.h
+    core/scene/scene_commands/scene_command_base.cpp
+    core/scene/scene_commands/scene_commands.cpp
+    core/scene/scene_commands/scene_commands.h
+
+    core/scene/scene_facade/scene_facade.h
+    core/scene/scene_facade/scene_facade.cpp
+
+    core/scene/scene.h
+    core/scene/scene.cpp
+
+    core/scene/scene_struct.h
+
+    core/object/terrain/terrain_commands/terrain_commands.h
+    core/object/terrain/terrain_commands/terrain_commands.cpp
+
+    core/object/terrain/terrain_struct.h
 
     core/object/light/light.h
     core/object/light/light.cpp
@@ -99,7 +124,10 @@ add_executable(
     core/gui/main_window.cpp
     core/gui/main_window.h
     core/gui/mainwindow.ui
-    core/gui/ui_mainwindow.h
+    #core/gui/ui_mainwindow.h
+
+    core/transform/transform.h
+    core/transform/transform.cpp
 )
 
 enable_testing()
@@ -140,11 +168,34 @@ add_executable(
   core/heightmap/perlin_noise/perlin_original.hpp
   core/heightmap/perlin_noise/perlin_original.cpp
 
+  core/heightmap/perlin_noise/perlin_noise_struct.h
+
   core/object/object_base.h
   core/object/terrain/base_terrain.h
   core/object/terrain/terrain.h
   core/object/terrain/terrain.hpp
   core/object/terrain/terrain.cpp
+
+  core/object/terrain/terrain_facade/terrain_facade.h
+  core/object/terrain/terrain_facade/terrain_facade.cpp
+
+
+  core/object/terrain/terrain_commands/terrain_commands.h
+  core/object/terrain/terrain_commands/terrain_commands.cpp
+
+  core/scene/scene_commands/scene_command_base.h
+  core/scene/scene_commands/scene_command_base.cpp
+  core/scene/scene_commands/scene_commands.cpp
+  core/scene/scene_commands/scene_commands.h
+
+  core/scene/scene_facade/scene_facade.h
+  core/scene/scene_facade/scene_facade.cpp
+
+  core/scene/scene.h
+  core/scene/scene.cpp
+
+  core/scene/scene_struct.h
+
 
   core/object/light/light.h
   core/object/light/light.cpp
@@ -201,7 +252,10 @@ add_executable(
   core/gui/main_window.cpp
   core/gui/main_window.h
   core/gui/mainwindow.ui
-  core/gui/ui_mainwindow.h
+  #core/gui/ui_mainwindow.h
+
+  core/transform/transform.h
+  core/transform/transform.cpp
 )
 
 
