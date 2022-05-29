@@ -2,6 +2,7 @@
 #define _SCENE_COMMAND_BASE_H_
 
 #include <iostream>
+#include <memory>
 
 class BaseSceneCommand{
     public:

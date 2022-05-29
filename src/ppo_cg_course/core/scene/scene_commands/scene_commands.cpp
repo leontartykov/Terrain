@@ -3,4 +3,5 @@
 void RenderScene::execute()
 {
     std::cout << "Render scene\n.";
+
 }
