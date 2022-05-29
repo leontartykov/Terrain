@@ -1,7 +1,9 @@
 #include "admin.h"
 #include "../../../entry/app_command/app_command.h"
+#include "../../../log_app/log_app.h"
 
 Admin::Admin(){
+     _current_time = time(NULL);
     _connect = nullptr;
     this->_connect_to_db();
     _app_facade = std::shared_ptr<AppFacade>(new AppFacade());
@@ -186,6 +188,15 @@ int Admin::do_action()
                 break;
             case menu::LAUNCH:
             {
+                log_info_t log_info_exception;
+                log_info_exception.type_log = "info";
+                log_info_exception.message_error = "запуск приложения.";
+                log_info_exception.user_login = user_login;
+                log_info_exception.time_error = ctime(&_current_time);
+
+                LogApp log_app;
+                log_app.write_log_info(log_info_exception);
+
                 std::shared_ptr<LaunchAppCmd> launch_cmd(new LaunchAppCmd());
                 std::shared_ptr<BaseAppCommand> base_launch_cmd = launch_cmd;
                 _app_facade->execute(base_launch_cmd);
@@ -250,4 +261,8 @@ int Admin::do_action()
     }
 
     return number;
+}
+
+void Admin::set_user_login(std::string &usr_login){
+    user_login = usr_login;
 }

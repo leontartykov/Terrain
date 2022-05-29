@@ -22,6 +22,7 @@ class Admin: public BaseUser
         int _is_user_empty(users_t &user);
 
         void show_menu();
+        time_t _current_time;
     public:
         Admin();
         ~Admin();
@@ -34,6 +35,7 @@ class Admin: public BaseUser
         int check_connection();
 
         virtual int do_action() override;
+        virtual void set_user_login(std::string &usr_login) override;
 };
 
 #endif

@@ -33,6 +33,7 @@ class EntrySystem
     private:
         int _verify_user(user_info_t &user);
         std::unique_ptr<pqxx::connection> _connect;
+        time_t _current_time;
 };
 
 #endif
