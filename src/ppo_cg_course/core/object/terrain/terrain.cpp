@@ -5,6 +5,7 @@
 #include "../../geometry/triangle/triangle_3d.hpp"
 #include "../../geometry/vector/vector_3d.h"
 #include "../../heightmap/perlin_noise/perlin_original.h"
+#include "../../transform/transform.h"
 
 /*!
  * \brief Terrain::Terrain
@@ -84,7 +85,7 @@ void Terrain::set_center_figure(Point3D<double> &point){
  * \param zbuffer
  * \param light_position
  */
-void Terrain::remove_invisible_lines(ZBuffer &zbuffer, Vector3D<int> light_position)
+void Terrain::remove_invisible_lines(ZBuffer &zbuffer, Point3D<int> light_position)
 {
     plane_coeffs_t plane_coeffs_top, plane_coeffs_bottom;
 
@@ -113,10 +114,9 @@ void Terrain::remove_invisible_lines(ZBuffer &zbuffer, Vector3D<int> light_posit
             plane_coeffs_top = find_equation_plane(_points[i][j], _points[i][j+1], _points[i + 1][j + 1]);
             plane_coeffs_bottom = find_equation_plane(_points[i][j], _points[i+1][j], _points[i + 1][j + 1]);
 
-            top_triangle_normals.set_triangle_vector(_shading_normals[i][j],
-                                                     _shading_normals[i][j+1], _shading_normals[i+1][j+1]);
-            bottom_triangle_normals.set_triangle_vector(_shading_normals[i][j],
-                                                     _shading_normals[i+1][j], _shading_normals[i+1][j+1]);
+            top_triangle_normals.set_triangle_vector(_shading_normals[i][j], _shading_normals[i][j+1], _shading_normals[i+1][j+1]);
+            bottom_triangle_normals.set_triangle_vector(_shading_normals[i][j], _shading_normals[i+1][j], _shading_normals[i+1][j+1]);
+
             triangle_top.set_triangle(_screen_points[i][j], _screen_points[i][j+1], _screen_points[i + 1][j + 1]);
             triangle_bottom.set_triangle(_screen_points[i][j], _screen_points[i+1][j], _screen_points[i + 1][j + 1]);
 
@@ -131,7 +131,8 @@ void Terrain::remove_invisible_lines(ZBuffer &zbuffer, Vector3D<int> light_posit
                                                      color_matrix, plane_coeffs_bottom);
 
             find_depth_pixels(zbuffer_matrix, color_matrix,
-                                                 rasterized_points_up, plane_coeffs_top, light_position, top_triangle_normals,
+                                                 rasterized_points_up, plane_coeffs_top,
+                                                 light_position, top_triangle_normals,
                                                  triangle_top_3d);
             find_depth_pixels(zbuffer_matrix, color_matrix,
                                                  rasterized_points_down, plane_coeffs_bottom,
@@ -141,6 +142,9 @@ void Terrain::remove_invisible_lines(ZBuffer &zbuffer, Vector3D<int> light_posit
             rasterized_points_up.clear(), rasterized_points_down.clear();
         }
     }
+
+    zbuffer.set_buffer_matrix(zbuffer_matrix);
+    zbuffer.set_color_matrix(color_matrix);
 }
 
 void Terrain::find_all_normals()
@@ -155,6 +159,7 @@ void Terrain::find_all_normals()
              normal_up_triangle = find_int_normal<int, double>(_points[i][j],
                                                                                     _points[i][j+1],
                                                                                     _points[i+1][j+1]);
+
              normal_down_triangle= find_int_normal<int, double>(_points[i][j],
                                                                                             _points[i+1][j],
                                                                                             _points[i+1][j+1]);
@@ -219,6 +224,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else{
@@ -227,6 +233,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -239,6 +246,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else{
@@ -246,6 +254,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -261,6 +270,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else
@@ -271,6 +281,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -286,6 +297,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else
@@ -296,6 +308,7 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
+                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -312,6 +325,7 @@ void Terrain::find_average_normals_of_each_node()
 
                 average_vector = find_shading_normals(normals, i, j);
                 average_vector.normalize();
+                //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                 row_shading_normals.push_back(average_vector);
             }
             normals.clear();
@@ -321,9 +335,125 @@ void Terrain::find_average_normals_of_each_node()
     }
 }
 
+int Terrain::write_to_file_bmp(std::string &path, ZBuffer &zbuffer)
+{
+    DataAccessFileBMP file_bmp;
+    int error = file_bmp.create(path, zbuffer.get_color_matrix());
+    return error;
+}
+
+void Terrain::set_meta_data(meta_data_t &meta_data)
+{
+    _meta_config.octaves = meta_data.octaves;
+    _meta_config.gain = meta_data.gain;
+    _meta_config.lacunarity = meta_data.lacunarity;
+    _meta_config.seed = meta_data.seed;
+    _meta_config.frequency = meta_data.frequency;
+}
+
+rotate_t Terrain::get_rotate_angles(){
+    return _rotate_landscape_angles;
+}
+
+void Terrain::set_rotate_angles(rotate_t &rotate_angles)
+{
+    _rotate_landscape_angles.angle_x = rotate_angles.angle_x;
+    _rotate_landscape_angles.angle_y = rotate_angles.angle_y;
+    _rotate_landscape_angles.angle_z = rotate_angles.angle_z;
+}
+
+void Terrain::form_terrain()
+{
+    PerlinNoise map(_meta_config.seed);
+    double fx = _width / _meta_config.frequency;
+    double fy = _height / _meta_config.frequency;
+
+    for (int x = 0; x < _width; x++){
+        for (int y = 0; y < _height; y++){
+            _points[x][y].set_point((x+1) * 5, (y+1) * 5, map.accumulatedNoise2D((x)/ fx, y / fy, _meta_config) * 1000);
+            _start_points[x][y] = _points[x][y];
+            //_points[x][y].output_point();
+            //std::cout << std::endl;
+        }
+    }
+}
+
+void Terrain::scale_terrain(double scale)
+{
+    _scale = scale;
+    for (int i = 0; i < _width; i++){
+        for (int j = 0; j < _height; j++){
+            _points[i][j].set_x(_start_points[i][j].get_x() * scale + (1 - scale) * _center_terrain_point.get_x());
+            _points[i][j].set_y(_start_points[i][j].get_y() * scale + (1 - scale) * _center_terrain_point.get_y());
+            _points[i][j].set_z(_start_points[i][j].get_z() * scale + (1 - scale) * _center_terrain_point.get_z());
+            //std::cout << "point: "; _points[i][j].output_point(); std::cout << std::endl;
+        }
+    }
+}
+
+void Terrain::transform_points_to_screen()
+{
+    for (int i = 0; i < _width; i++)
+    {
+        for (int j = 0; j < _height; j++){
+            //std::cout << "_screen_points: "; _screen_points[i][j].output_point(); std::cout << std::endl;
+            //std::cout << "_points: "; _points[i][j].output_point(); std::cout << std::endl;
+            transform_3d_into_2d(_screen_points[i][j], _points[i][j]);
+            _screen_points[i][j].set_z(_points[i][j].get_z());
+            //std::cout << "_screen_points_new: "; _screen_points[i][j].output_point(); std::cout << std::endl;
+        }
+    }
+}
+
+void Terrain::rotate_terrain(rotate_t &diff_rotate_angles)
+{
+    //Point3D<double> center_figure_point;
+    Point3D<double> begin_landscape_point, end_landscape_point;
+
+    begin_landscape_point.set_point(_points[0][0].get_x(),
+                                                        _points[0][0].get_y(),
+                                                        _points[0][0].get_z());
+    end_landscape_point.set_point(_points[_points.size() - 1][_points[0].size() - 1].get_x(),
+                                                        _points[_points.size() - 1][_points[0].size() - 1].get_y(),
+                                                        _points[_points.size() - 1][_points[0].size() - 1].get_z());
+
+    _center_terrain_point.set_point((begin_landscape_point.get_x() + end_landscape_point.get_x()) / 2,
+                                            (begin_landscape_point.get_y() + end_landscape_point.get_y()) / 2,
+                                            (begin_landscape_point.get_z() + end_landscape_point.get_z()) / 2);
+    //std::cout << "point: "; _center_terrain_point.output_point(); std::cout << std::endl;
+
+    for (int i = 0; i < _width; i++){
+        for (int j = 0; j < _height; j++){
+            //std::cout << "point_before: "; _points[i][j].output_point(); std::cout << std::endl;
+            shift_point_by_center(_points[i][j], _center_terrain_point);
+            rotate_point(_points[i][j], diff_rotate_angles);
+            shift_point_back_by_center(_points[i][j], _center_terrain_point);
+
+            shift_point_by_center(_start_points[i][j], _center_terrain_point);
+            rotate_point(_start_points[i][j], diff_rotate_angles);
+            shift_point_back_by_center(_start_points[i][j], _center_terrain_point);
+
+            //std::cout << "point: "; _points[i][j].output_point(); std::cout << std::endl;
+            //std::cout << "start_point: "; _start_points[i][j].output_point(); std::cout << std::endl;
+        }
+    }
+}
+
+int Terrain::get_rotate_x(){
+    return _rotate_landscape_angles.angle_x;
+}
+
+int Terrain::get_rotate_y(){
+    return _rotate_landscape_angles.angle_y;
+}
+
+int Terrain::get_rotate_z(){
+    return _rotate_landscape_angles.angle_z;
+}
+
 void Terrain::clear_normals()
 {
-    int width_landscape = (*this).get_width();
+    int width_landscape = this->get_width(), height_landscape = this->get_height();
     for (int i = 0; i < width_landscape - 1; i++)
     {
         _normals_up_triangles[i].clear();
@@ -335,44 +465,56 @@ void Terrain::clear_normals()
     _shading_normals.clear();
 }
 
-int Terrain::write_to_file_bmp(std::string &path, ZBuffer &zbuffer)
+void Terrain::clear()
 {
-    DataAccessFileBMP file_bmp;
-    int error = file_bmp.create(path, zbuffer.get_color_matrix());
-    return error;
+    for (int i = 0; i < _width; i++){
+         _points[i].clear();
+         _start_points[i].clear();
+         _screen_points[i].clear();
+         _shading_normals[i].clear();
+    }
+    _shading_normals.clear();
+    _points.clear();
+    _start_points.clear();
+    _screen_points.clear();
+
+    _meta_config.gain = 0, _meta_config.lacunarity = 0, _meta_config.octaves = 0;
+
+    for (int i = 0; i < _width - 1; i++)
+    {
+        _normals_up_triangles[i].clear();
+        _normals_down_triangles[i].clear();
+    }
+    _normals_up_triangles.clear();
+    _normals_down_triangles.clear();
 }
 
-void Terrain::set_meta_config(int octaves, double gain, double lacunarity, int seed, double frequency)
+void Terrain::draw_terrain(std::vector<std::vector<QColor>> &colors, QGraphicsScene *scene, QGraphicsView *view)
 {
-    _meta_config.octaves = octaves;
-    _meta_config.gain = gain;
-    _meta_config.lacunarity = lacunarity;
-    _meta_config.seed = seed;
-    _meta_config.frequency = frequency;
-}
+    QPixmap pixmap(SCREEN_WIDTH, SCREEN_HEIGHT);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
 
-rotate_t Terrain::get_rotate_angles(){
-    return _rotate_landscape_angles;
-}
+    int r = 0, g = 0, b = 0;
+    colors[0][0].getRgb(&r, &g, &b);
 
-void Terrain::set_rotate_angles(int angle_x, int angle_y, int angle_z)
-{
-    _rotate_landscape_angles.angle_x = angle_x;
-    _rotate_landscape_angles.angle_y = angle_y;
-    _rotate_landscape_angles.angle_z = angle_z;
-}
-
-void Terrain::form_terrain()
-{
-    PerlinNoise map(_meta_config.seed);
-    double frequency = 1.5;
-    double fx = _width / _meta_config.frequency;
-    double fy = _height / _meta_config.frequency;
-
-    for (int x = 0; x < _width; x++){
-        for (int y = 0; y < _height; y++){
-            _points[x][y].set_point((x+1) * 5, (y+1) * 5, map.accumulatedNoise2D((x)/ fx, y / fy, _meta_config) * 1000);
-            _start_points[x][y] = _points[x][y];
+    for (int i = 0; i < SCREEN_WIDTH; i++){
+        for (int j = 0; j < SCREEN_HEIGHT; j++)
+        {
+            colors[i][j].getRgb(&r, &g, &b);
+            if (r != 255 && g != 255 && b != 255){
+                painter.setPen(QColor(r, g, b));
+                painter.drawLine(i, j, i, j);
+            }
         }
     }
+
+    painter.end();
+    scene->clear();
+    scene->addPixmap(pixmap);
+}
+
+void Terrain::change_size(int width, int height){
+    _width = height + 1, _height = width + 1;
+    this->init_terrain(_width, _height);
 }

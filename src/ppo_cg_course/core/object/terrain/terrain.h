@@ -2,20 +2,16 @@
 #define _TERRAIN_H_
 
 #include <vector>
+#include <QGraphicsScene>
+#include <QPainter>
+
 #include "base_terrain.h"
+#include "terrain_struct.h"
 #include "../../geometry/point/point_3d.h"
 #include "../../geometry/vector/vector_3d.h"
 #include "../../invisible/zbuffer/zbuffer.h"
 #include "../../heightmap/perlin_noise/perlin_original.h"
 #include "../../geometry/triangle/triangle_3d.h"
-
-typedef struct rotate rotate_t;
-struct rotate
-{
-    double angle_x;
-    double angle_y;
-    double angle_z;
-};
 
 class Terrain
 {
@@ -51,17 +47,30 @@ class Terrain
         Point3D<double> get_center_figure();
         void set_center_figure(Point3D<double> &point);
 
-        void remove_invisible_lines(ZBuffer &zbuffer, Vector3D<int> light_position);
+        void remove_invisible_lines(ZBuffer &zbuffer, Point3D<int> light_position);
         void find_all_normals();
         void find_average_normals_of_each_node();
-        void clear_normals();
         void form_terrain();
 
         int write_to_file_bmp(std::string &path, ZBuffer &zbuffer);
-        void set_meta_config(int octaves, double gain, double lacunarity, int seed, double frequency);
-        rotate_t get_rotate_angles();
-        void set_rotate_angles(int angle_x, int angle_y, int angle_z);
+        void set_meta_data(meta_data_t &meta_data);
 
+        rotate_t get_rotate_angles();
+        void set_rotate_angles(rotate_t &rotate_angles);
+        void scale_terrain(double scale);
+        void transform_points_to_screen();
+        void rotate_terrain(rotate_t &diff_rotate_angles);
+
+        int get_rotate_x();
+        int get_rotate_y();
+        int get_rotate_z();
+
+        void clear();
+        void clear_normals();
+
+        void draw_terrain(std::vector<std::vector<QColor>> &colors, QGraphicsScene *scene, QGraphicsView *view);
+
+        void change_size(int width, int height);
 };
 
 #endif
