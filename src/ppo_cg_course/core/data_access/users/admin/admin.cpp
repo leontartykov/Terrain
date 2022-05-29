@@ -9,7 +9,6 @@ Admin::Admin(){
 
 Admin::~Admin(){
     this->disconnect_db();
-    std::cout << "Admin destructor.\n";
 }
 
 int Admin::_connect_to_db()
@@ -167,9 +166,10 @@ void Admin::show_menu(){
     std::cout << "4. Заблокировать пользователя.\n";
     std::cout << "5. Разблокировать пользователя.\n";
     std::cout << "0. Выйти.\n";
+    std::cout << std::endl;
 }
 
-void Admin::do_action()
+int Admin::do_action()
 {
     this->show_menu();
     int number = -1;
@@ -248,4 +248,6 @@ void Admin::do_action()
                 break;
         }
     }
+
+    return number;
 }

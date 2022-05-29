@@ -33,7 +33,7 @@ class Admin: public BaseUser
         int disconnect_db();
         int check_connection();
 
-        virtual void do_action() override;
+        virtual int do_action() override;
 };
 
 #endif
