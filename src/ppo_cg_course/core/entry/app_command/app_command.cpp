@@ -10,6 +10,7 @@ void LaunchAppCmd::execute(){
 int LaunchAppCmd::_execute()
 {
     int argc = 1;
+    std::cout << "Launch execute." << std::endl;
     char *argv[] = {"/home/lev/Desktop/study/semester_6/iu7_software_design_labs_2022/src/build-ppo_cg_course-Desktop-Release/core_files"};
     QApplication a(argc, argv);
     MainWindow w;
