@@ -128,6 +128,13 @@ add_executable(
 
     core/transform/transform.h
     core/transform/transform.cpp
+
+    core/log_app/log_app.h
+    core/log_app/log_app.cpp
+    core/log_app/log_structs.h
+
+    core/exceptions/base_error.h
+    core/exceptions/errors.h
 )
 
 enable_testing()
@@ -256,6 +263,13 @@ add_executable(
 
   core/transform/transform.h
   core/transform/transform.cpp
+
+  core/log_app/log_app.h
+  core/log_app/log_app.cpp
+  core/log_app/log_structs.h
+
+  core/exceptions/base_error.h
+  core/exceptions/errors.h
 )
 
 
