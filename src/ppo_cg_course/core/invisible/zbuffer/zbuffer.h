@@ -17,7 +17,7 @@
 typedef struct rasterised_points rasterised_points_t;
 struct rasterised_points
 {
-    Point2D<int> point;
+    Point2D<double> point;
     double intensity;
 };
 
@@ -31,7 +31,7 @@ class ZBuffer
         void _init_zbuffer(int width, int height);
 
     public:
-        ZBuffer() = default;
+        ZBuffer() {_init_zbuffer(SCREEN_WIDTH, SCREEN_HEIGHT);}
         ZBuffer(int width, int height) {_init_zbuffer(width, height);}
         ~ZBuffer();
 
@@ -49,22 +49,25 @@ class ZBuffer
 
         void set_color(int index_i, int index_j, QRgb color);
         void reset();
+
+        void set_buffer_matrix(std::vector<std::vector<double>> buffer_matrix);
+        void set_color_matrix(std::vector<std::vector<QColor>> color_matrix);
 };
 
 std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
                                                          Point3D<int> start_point, Point3D<int> end_point,
                                                         Point3D<double> norm_start, Point3D<double> norm_end,
-                                                            Vector3D<int> &light_position, plane_coeffs_t &plane_coeffs);
+                                                            Point3D<int> &light_position, plane_coeffs_t &plane_coeffs);
 
 Point3D<int> rasterize_triangle(std::vector<std::vector<rasterised_points_t>> &rasterized_points,
                                     Triangle3D<double>&triangle, Triangle3D<double>&triangle_normals,
-                                    Vector3D<int> &light_position,
+                                    Point3D<int> &light_position,
                                     std::vector<std::vector<QColor>> &colors, plane_coeffs_t &plane_coeffs);
 
 void find_depth_pixels(std::vector<std::vector<double>> &zbuffer_matrix,
                                             std::vector<std::vector<QColor>> &color_matrix,
                                             std::vector<std::vector<rasterised_points_t>> &rasterized_points,
-                                            plane_coeffs_t &plane_coeffs, Vector3D<int> &light_position,
+                                            plane_coeffs_t &plane_coeffs, Point3D<int> &light_position,
                                             Triangle3D<double>&triangle_normals, Triangle3D<double>points_3d);
 
 double find_depth_pixel(int rasterize_x, int rasterize_y,

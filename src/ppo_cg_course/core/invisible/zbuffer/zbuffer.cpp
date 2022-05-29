@@ -66,7 +66,7 @@ int sign(int x)
 std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
                                                          Point3D<int> start_point, Point3D<int> end_point,
                                                         Point3D<double> norm_start, Point3D<double> norm_end,
-                                                            Vector3D<int> &light_position, plane_coeffs_t &plane_coeffs)
+                                                            Point3D<int> &light_position, plane_coeffs_t &plane_coeffs)
 {
     std::vector<std::vector<rasterised_points_t>> edge;
     std::vector<rasterised_points_t> edge_board;
@@ -75,7 +75,7 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
     rasterised_points_t point;
     Vector3D<double> normal_start, normal_end;
     normal_start.set_vector(norm_start.get_x(), norm_start.get_y(), norm_start.get_z());
-    normal_start.set_vector(norm_end.get_x(), norm_end.get_y(), norm_end.get_z());
+    normal_end.set_vector(norm_end.get_x(), norm_end.get_y(), norm_end.get_z());
 
     int flag_exchange = 0;
     int x_start = start_point.get_x(), y_start = start_point.get_y();
@@ -113,6 +113,8 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
                                              light_position.get_y() - y_3d,
                                              light_position.get_z() - start_point.get_z());
     light_direction.normalize();
+    //std::cout << "normal_start: "; normal_start.output(); std::cout << std::endl;
+    //std::cout << "light_direction: "; light_direction.output(); std::cout << std::endl;
     Istart = std::max(dot_product<double>(normal_start, light_direction), 0.0);
 
     x_3d = ((x_end - SCREEN_WIDTH / 4) * (z + 1000)/1000);
@@ -121,7 +123,11 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
                                              light_position.get_y() - y_3d,
                                              light_position.get_z() - end_point.get_z());
     light_direction.normalize();
+    //std::cout << "normal_end: "; normal_end.output(); std::cout << std::endl;
+    //std::cout << "light_direction: "; light_direction.output(); std::cout << std::endl;
     Iend = std::max(dot_product<double>(normal_end, light_direction), 0.0);
+
+    //std::cout << "Istart = " << Istart << " Iend = " << Iend << std::endl;
 
     while (i <= dx)
     {
@@ -142,7 +148,9 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
             intensity = (1 - t) * Istart + t * Iend;
         }
 
-        point.point = Point2D<int>(x_temp, y_temp);
+        //std::cout << "pointa: " << x_temp << ", " << y_temp << std::endl;
+        //std::cout << "intensity: " << intensity << std::endl;
+        point.point = Point2D<double>(x_temp, y_temp);
         point.intensity = intensity;
         edge_board.push_back(point);
 
@@ -216,6 +224,7 @@ void find_rasterize_points_right_bottom(
         }
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
+        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
 
         for (int x = x_left_value, y = edge_3[i][0].point.get_y();
               x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
@@ -229,7 +238,9 @@ void find_rasterize_points_right_bottom(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            point.point = Point2D<int>(x, y);
+            //std::cout << "point: " << x << ", " << y << std::endl;
+            //std::cout << "intensity: " << intensity << std::endl;
+            point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
         }
@@ -268,6 +279,7 @@ void find_rasterize_points_right_top(
         }
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
+        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
         for (int x = x_left_value, y = edge_2[i][0].point.get_y();
                x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
         {
@@ -279,7 +291,9 @@ void find_rasterize_points_right_top(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            point.point = Point2D<int>(x, y);
+            //std::cout << "point: " << x << ", " << y << std::endl;
+            //std::cout << "intensity: " << intensity << std::endl;
+            point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
         }
@@ -321,6 +335,7 @@ void find_rasterize_points_left_bottom(
 
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
+        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
         for (int y = edge_3[i][0].point.get_y(), x = x_left_value;
               x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
         {
@@ -332,7 +347,9 @@ void find_rasterize_points_left_bottom(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            point.point = Point2D<int>(x, y);
+            //std::cout << "point: " << x << ", " << y << std::endl;
+            //std::cout << "intensity: " << intensity << std::endl;
+            point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
         }
@@ -372,12 +389,14 @@ void find_rasterize_points_left_top(
         edge_2_i_size = edge_2[i].size();
 
         rasterised_points_t x_left = edge_1[i][edge_1_i_size - 1], x_right = edge_2[i][edge_2_i_size - 1];
+
         if (x_left.point.get_x() > x_right.point.get_x()){
             swap_rasterised_points(x_left, x_right);
         }
 
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
+        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
         for (int y = edge_1[i][0].point.get_y(), x = x_left_value;
               x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
         {
@@ -388,7 +407,10 @@ void find_rasterize_points_left_top(
                 t = (fabs(x_left_value - x)) / (fabs(x_left_value - x_right_value));
                 intensity = (1 - t) * I_left + t * I_right;
             }
-            point.point = Point2D<int>(x, y);
+
+            //std::cout << "point: " << x << ", " << y << std::endl;
+            //std::cout << "intensity: " << intensity << std::endl;
+            point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
         }
@@ -399,7 +421,7 @@ void find_rasterize_points_left_top(
 
 Point3D<int> rasterize_triangle(std::vector<std::vector<rasterised_points_t>> &rasterized_points,
                                     Triangle3D<double>&triangle, Triangle3D<double>&triangle_normals,
-                                    Vector3D<int> &light_position,
+                                    Point3D<int> &light_position,
                                     std::vector<std::vector<QColor>> &colors, plane_coeffs_t &plane_coeffs)
 {
     std::vector<std::vector<rasterised_points_t>> rasterized_points_up, rasterized_points_down;
@@ -407,16 +429,25 @@ Point3D<int> rasterize_triangle(std::vector<std::vector<rasterised_points_t>> &r
     Point3D<int> min_point, max_point, middle_point;
     std::array<Point3D<int>, 3> points;
 
+    //triangle_normals.output();
+
     //find plane equation coeffs for triangle
     plane_coeffs = find_equation_plane(triangle[0], triangle[1], triangle[2]);
 
     //find min, middle, max points of triangle, located in screen
+    /*std::cout << "triangle[0] = "; triangle[0].output_point();
+    std::cout << "triangle[1] = "; triangle[1].output_point();
+    std::cout << "triangle[2] = "; triangle[2].output_point();*/
     points = define_points_sort_inc(triangle[0], triangle[1], triangle[2], triangle_normals);
     min_point = points[0], middle_point = points[1], max_point = points[2];
+    /*std::cout << "min_point = "; min_point.output_point();
+    std::cout << "middle_point = "; middle_point.output_point();
+    std::cout << "max_point = "; max_point.output_point();*/
 
     //find pixel coordinates for triangle edges
     edge_1 = create_line_by_int_brezenhem(min_point, middle_point, triangle_normals[0],
                                                                      triangle_normals[1], light_position, plane_coeffs);
+    //std::cout << "edge_1 size: " << edge_1.size() << std::endl;
     edge_2 = create_line_by_int_brezenhem(min_point, max_point, triangle_normals[0],
                                                                      triangle_normals[2], light_position, plane_coeffs);
     edge_3 = create_line_by_int_brezenhem(middle_point, max_point,
@@ -451,7 +482,7 @@ double find_depth_pixel(int rasterize_x, int rasterize_y, plane_coeffs_t &plane_
 void find_depth_pixels(std::vector<std::vector<double>> &zbuffer_matrix,
                                             std::vector<std::vector<QColor>> &color_matrix,
                                             std::vector<std::vector<rasterised_points_t>> &rasterized_points,
-                                            plane_coeffs_t &plane_coeffs, Vector3D<int> &light_position,
+                                            plane_coeffs_t &plane_coeffs, Point3D<int> &light_position,
                                             Triangle3D<double>&triangle_normals, Triangle3D<double>points_3d)
 {
     //направление света
@@ -469,6 +500,7 @@ void find_depth_pixels(std::vector<std::vector<double>> &zbuffer_matrix,
     int r_in = 0, g_in = 0, b_in = 0;
 
     int size_row = rasterized_points.size(), size_column = 0;
+
     for (int i = 0; i < size_row; i++)
     {
         size_column = rasterized_points[i].size();
@@ -608,7 +640,10 @@ void ZBuffer::reset()
     }
 }
 
-/*int ZBuffer::create_file_bmp(std::string &path)
-{
+void ZBuffer::set_buffer_matrix(std::vector<std::vector<double>> buffer_matrix){
+    _zbuffer_matrix = buffer_matrix;
+}
 
-}*/
+void ZBuffer::set_color_matrix(std::vector<std::vector<QColor>> color_matrix){
+    _color_matrix = color_matrix;
+}
