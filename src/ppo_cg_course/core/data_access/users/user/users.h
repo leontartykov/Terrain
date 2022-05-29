@@ -17,7 +17,7 @@ class User: public BaseUser
         User();
         ~User() = default;
 
-        virtual void do_action();
+        virtual int do_action() override;
 };
 
 #endif

@@ -7,9 +7,10 @@ User::User(){
 void User::show_menu(){
     std::cout << "1. Запустить приложение.\n";
     std::cout << "0. Выйти.\n";
+    std::cout << std::endl;
 }
 
-void User::do_action()
+int User::do_action()
 {
     this->show_menu();
     int number = -1;
@@ -17,7 +18,6 @@ void User::do_action()
     {
         std::cout << "Введите пункт меню:\n";
         std::cin >> number;
-        std::cout << "number: " << number << std::endl;
 
         switch (number)
         {
@@ -33,4 +33,6 @@ void User::do_action()
             }
         }
     }
+
+    return number;
 }

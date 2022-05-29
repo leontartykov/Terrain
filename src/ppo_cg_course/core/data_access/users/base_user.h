@@ -5,7 +5,7 @@ class BaseUser
 {
     public:
         virtual ~BaseUser() = default;
-        virtual void do_action() = 0;
+        virtual int do_action() = 0;
 };
 
 #endif
