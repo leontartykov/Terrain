@@ -12,12 +12,10 @@ int EntrySystem::_verify_user(user_info_t &user){
     int error = 0;
     try
     {
+        config_t config_data = _config.read_config_file_postgres();
+        std::string options = _config.form_options(config_data);
         _connect = std::unique_ptr<pqxx::connection>(
-                    new pqxx::connection("host = localhost "
-                                                        "port = 5432 "
-                                                        "password = postgres "
-                                                        "user = postgres "
-                                                        "dbname = ppo "));
+                    new pqxx::connection(options));
     }
     catch (std::exception const &e){
         log_info_t log_info_exception = {
