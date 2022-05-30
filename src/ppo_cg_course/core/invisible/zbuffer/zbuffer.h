@@ -52,6 +52,8 @@ class ZBuffer
 
         void set_buffer_matrix(std::vector<std::vector<double>> buffer_matrix);
         void set_color_matrix(std::vector<std::vector<QColor>> color_matrix);
+
+        void convert_color_to_black_and_white();
 };
 
 std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(

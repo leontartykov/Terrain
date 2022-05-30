@@ -66,3 +66,7 @@ int Scene::load_terrain()
 
     return 0;
 }
+
+void Scene::convert_color_to_black_and_white(){
+    _zbuffer->convert_color_to_black_and_white();
+}

@@ -647,3 +647,15 @@ void ZBuffer::set_buffer_matrix(std::vector<std::vector<double>> buffer_matrix){
 void ZBuffer::set_color_matrix(std::vector<std::vector<QColor>> color_matrix){
     _color_matrix = color_matrix;
 }
+
+void ZBuffer::convert_color_to_black_and_white()
+{
+    int r, g, b, grey;
+    for (int i = 0; i < _width; i++){
+        for (int j = 0; j < _height; j++){
+            _color_matrix[i][j].getRgb(&r, &g, &b);
+            grey = 0.36 * r + 0.53 * g + 0.11 * b;
+            _color_matrix[i][j].setRgb(qRgb(grey, grey, grey));
+        }
+    }
+}
