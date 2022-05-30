@@ -9,8 +9,8 @@ TEST(tests_users_add_user, positive)
 
     users_t user = {.login = "user_1",
                               .password = "ur21",
-                              .is_blocked=false,
-                              .is_deleted=false};
+                              .is_blocked="false",
+                              .is_deleted="false"};
     int error = admin->add_user(user);
 
     EXPECT_EQ(error, result);
@@ -23,8 +23,8 @@ TEST(tests_users_delete_user, positive)
 
     users_t user = {.login = "user_1",
                               .password = "ur21",
-                              .is_blocked=false,
-                              .is_deleted=false};
+                              .is_blocked="false",
+                              .is_deleted="false"};
     int error = admin->delete_user(user);
 
     EXPECT_EQ(error, result);
@@ -38,8 +38,8 @@ TEST(tests_users_lock_user, positive)
 
     users_t user = {.login = "user_1",
                               .password = "ur21",
-                              .is_blocked=false,
-                              .is_deleted=false};
+                              .is_blocked="false",
+                              .is_deleted="false"};
     int error = admin->lock_user(user);
 
     EXPECT_EQ(error, result);
@@ -52,8 +52,8 @@ TEST(tests_users_unlock_user, positive)
 
     users_t user = {.login = "user_1",
                               .password = "ur21",
-                              .is_blocked=false,
-                              .is_deleted=false};
+                              .is_blocked="false",
+                              .is_deleted="false"};
     int error = admin->unlock_user(user);
 
     EXPECT_EQ(error, result);
