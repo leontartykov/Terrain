@@ -113,8 +113,7 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
                                              light_position.get_y() - y_3d,
                                              light_position.get_z() - start_point.get_z());
     light_direction.normalize();
-    //std::cout << "normal_start: "; normal_start.output(); std::cout << std::endl;
-    //std::cout << "light_direction: "; light_direction.output(); std::cout << std::endl;
+
     Istart = std::max(dot_product<double>(normal_start, light_direction), 0.0);
 
     x_3d = ((x_end - SCREEN_WIDTH / 4) * (z + 1000)/1000);
@@ -123,11 +122,8 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
                                              light_position.get_y() - y_3d,
                                              light_position.get_z() - end_point.get_z());
     light_direction.normalize();
-    //std::cout << "normal_end: "; normal_end.output(); std::cout << std::endl;
-    //std::cout << "light_direction: "; light_direction.output(); std::cout << std::endl;
-    Iend = std::max(dot_product<double>(normal_end, light_direction), 0.0);
 
-    //std::cout << "Istart = " << Istart << " Iend = " << Iend << std::endl;
+    Iend = std::max(dot_product<double>(normal_end, light_direction), 0.0);
 
     while (i <= dx)
     {
@@ -148,8 +144,6 @@ std::vector<std::vector<rasterised_points_t>> create_line_by_int_brezenhem(
             intensity = (1 - t) * Istart + t * Iend;
         }
 
-        //std::cout << "pointa: " << x_temp << ", " << y_temp << std::endl;
-        //std::cout << "intensity: " << intensity << std::endl;
         point.point = Point2D<double>(x_temp, y_temp);
         point.intensity = intensity;
         edge_board.push_back(point);
@@ -224,7 +218,6 @@ void find_rasterize_points_right_bottom(
         }
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
-        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
 
         for (int x = x_left_value, y = edge_3[i][0].point.get_y();
               x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
@@ -238,8 +231,6 @@ void find_rasterize_points_right_bottom(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            //std::cout << "point: " << x << ", " << y << std::endl;
-            //std::cout << "intensity: " << intensity << std::endl;
             point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
@@ -279,7 +270,7 @@ void find_rasterize_points_right_top(
         }
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
-        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
+
         for (int x = x_left_value, y = edge_2[i][0].point.get_y();
                x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
         {
@@ -291,8 +282,6 @@ void find_rasterize_points_right_top(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            //std::cout << "point: " << x << ", " << y << std::endl;
-            //std::cout << "intensity: " << intensity << std::endl;
             point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
@@ -335,7 +324,7 @@ void find_rasterize_points_left_bottom(
 
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
-        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
+
         for (int y = edge_3[i][0].point.get_y(), x = x_left_value;
               x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
         {
@@ -347,8 +336,6 @@ void find_rasterize_points_left_bottom(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            //std::cout << "point: " << x << ", " << y << std::endl;
-            //std::cout << "intensity: " << intensity << std::endl;
             point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
@@ -396,7 +383,7 @@ void find_rasterize_points_left_top(
 
         double x_left_value = x_left.point.get_x(), x_right_value = x_right.point.get_x();
         double I_left = x_left.intensity, I_right = x_right.intensity;
-        //std::cout << "I_left = " << I_left << " I_right = " << I_right << std::endl;
+
         for (int y = edge_1[i][0].point.get_y(), x = x_left_value;
               x <= x_right_value && x < SCREEN_WIDTH && y < SCREEN_HEIGHT; x++)
         {
@@ -408,8 +395,6 @@ void find_rasterize_points_left_top(
                 intensity = (1 - t) * I_left + t * I_right;
             }
 
-            //std::cout << "point: " << x << ", " << y << std::endl;
-            //std::cout << "intensity: " << intensity << std::endl;
             point.point = Point2D<double>(x, y);
             point.intensity = intensity;
             temp_points.push_back(point);
@@ -659,3 +644,4 @@ void ZBuffer::convert_color_to_black_and_white()
         }
     }
 }
+

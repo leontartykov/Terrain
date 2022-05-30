@@ -224,7 +224,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else{
@@ -233,7 +232,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -246,7 +244,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else{
@@ -254,7 +251,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -270,7 +266,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else
@@ -281,7 +276,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -297,7 +291,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
                 else
@@ -308,7 +301,6 @@ void Terrain::find_average_normals_of_each_node()
 
                     average_vector = find_shading_normals(normals, i, j);
                     average_vector.normalize();
-                    //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                     row_shading_normals.push_back(average_vector);
                 }
             }
@@ -325,7 +317,6 @@ void Terrain::find_average_normals_of_each_node()
 
                 average_vector = find_shading_normals(normals, i, j);
                 average_vector.normalize();
-                //std::cout << "avg: "; average_vector.output(); std::cout << std::endl;
                 row_shading_normals.push_back(average_vector);
             }
             normals.clear();
@@ -372,8 +363,6 @@ void Terrain::form_terrain()
         for (int y = 0; y < _height; y++){
             _points[x][y].set_point((x+1) * 5, (y+1) * 5, map.accumulatedNoise2D((x)/ fx, y / fy, _meta_config) * 1000);
             _start_points[x][y] = _points[x][y];
-            //_points[x][y].output_point();
-            //std::cout << std::endl;
         }
     }
 }
@@ -386,7 +375,6 @@ void Terrain::scale_terrain(double scale)
             _points[i][j].set_x(_start_points[i][j].get_x() * scale + (1 - scale) * _center_terrain_point.get_x());
             _points[i][j].set_y(_start_points[i][j].get_y() * scale + (1 - scale) * _center_terrain_point.get_y());
             _points[i][j].set_z(_start_points[i][j].get_z() * scale + (1 - scale) * _center_terrain_point.get_z());
-            //std::cout << "point: "; _points[i][j].output_point(); std::cout << std::endl;
         }
     }
 }
@@ -396,18 +384,14 @@ void Terrain::transform_points_to_screen()
     for (int i = 0; i < _width; i++)
     {
         for (int j = 0; j < _height; j++){
-            //std::cout << "_screen_points: "; _screen_points[i][j].output_point(); std::cout << std::endl;
-            //std::cout << "_points: "; _points[i][j].output_point(); std::cout << std::endl;
             transform_3d_into_2d(_screen_points[i][j], _points[i][j]);
             _screen_points[i][j].set_z(_points[i][j].get_z());
-            //std::cout << "_screen_points_new: "; _screen_points[i][j].output_point(); std::cout << std::endl;
         }
     }
 }
 
 void Terrain::rotate_terrain(rotate_t &diff_rotate_angles)
 {
-    //Point3D<double> center_figure_point;
     Point3D<double> begin_landscape_point, end_landscape_point;
 
     begin_landscape_point.set_point(_points[0][0].get_x(),
@@ -420,11 +404,9 @@ void Terrain::rotate_terrain(rotate_t &diff_rotate_angles)
     _center_terrain_point.set_point((begin_landscape_point.get_x() + end_landscape_point.get_x()) / 2,
                                             (begin_landscape_point.get_y() + end_landscape_point.get_y()) / 2,
                                             (begin_landscape_point.get_z() + end_landscape_point.get_z()) / 2);
-    //std::cout << "point: "; _center_terrain_point.output_point(); std::cout << std::endl;
 
     for (int i = 0; i < _width; i++){
         for (int j = 0; j < _height; j++){
-            //std::cout << "point_before: "; _points[i][j].output_point(); std::cout << std::endl;
             shift_point_by_center(_points[i][j], _center_terrain_point);
             rotate_point(_points[i][j], diff_rotate_angles);
             shift_point_back_by_center(_points[i][j], _center_terrain_point);
@@ -432,9 +414,6 @@ void Terrain::rotate_terrain(rotate_t &diff_rotate_angles)
             shift_point_by_center(_start_points[i][j], _center_terrain_point);
             rotate_point(_start_points[i][j], diff_rotate_angles);
             shift_point_back_by_center(_start_points[i][j], _center_terrain_point);
-
-            //std::cout << "point: "; _points[i][j].output_point(); std::cout << std::endl;
-            //std::cout << "start_point: "; _start_points[i][j].output_point(); std::cout << std::endl;
         }
     }
 }
@@ -518,3 +497,4 @@ void Terrain::change_size(int width, int height){
     _width = height + 1, _height = width + 1;
     this->init_terrain(_width, _height);
 }
+
