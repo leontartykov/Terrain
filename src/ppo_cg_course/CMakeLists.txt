@@ -16,6 +16,12 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 include_directories(${Qt5Gui_INCLUDE_DIRS}, ${PostgreSQL_INCLUDE_DIRS})
 
+set(FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR your_path_to_mysql_connectorcpp)
+include_directories(${FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR}/include)
+include_directories(${FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR}/include/cppconn)
+link_directories(${FULL_PATH_TO_MYSQL_CONNECTOR_CPP_DIR}/lib)
+
+
 add_executable(
     core_files
 
@@ -135,6 +141,10 @@ add_executable(
 
     core/exceptions/base_error.h
     core/exceptions/errors.h
+
+    core/config/config_struct.h
+    core/config/config.h
+    core/config/config.cpp
 )
 
 enable_testing()
@@ -270,15 +280,18 @@ add_executable(
 
   core/exceptions/base_error.h
   core/exceptions/errors.h
+
+  core/config/config_struct.h
+  core/config/config.h
+  core/config/config.cpp
 )
 
 
 include(GoogleTest)
 gtest_discover_tests(unit_all_tests)
 
-target_link_libraries(unit_all_tests Qt5::Gui Qt5::Widgets -lpqxx -lpq
+target_link_libraries(unit_all_tests Qt5::Gui Qt5::Widgets -lpqxx -lpq -ljsoncpp ${JSONCPP_LIBRARIES} mysqlcppconn
                                 gtest gtest_main)
-target_link_libraries(core_files Qt5::Gui Qt5::Widgets -lpqxx -lpq)
-#target_link_libraries(entry_program Qt5::Gui -lpqxx -lpq)
+target_link_libraries(core_files Qt5::Gui Qt5::Widgets -lpqxx -lpq -ljsoncpp ${JSONCPP_LIBRARIES} mysqlcppconn)
 
 
