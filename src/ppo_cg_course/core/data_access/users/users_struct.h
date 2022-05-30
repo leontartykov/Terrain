@@ -6,8 +6,8 @@
 typedef struct users users_t;
 struct users{
     std::string login, password;
-    bool is_blocked; //false if is unblocked, true -- if blocked
-    bool is_deleted;
+    std::string is_blocked; //false if is unblocked, true -- if blocked
+    std::string is_deleted;
 };
 
 #endif
