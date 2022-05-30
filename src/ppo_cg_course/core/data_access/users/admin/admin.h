@@ -11,6 +11,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <mysql_driver.h>
+#include <string>
 
 #include "../base_user.h"
 #include "../../../entry/entry.h"

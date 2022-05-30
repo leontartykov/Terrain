@@ -37,7 +37,7 @@ config_t Config::read_config_file_mysql()
     Json::Value root;
     reader.parse(config_file, root);
 
-    if (root["PostgreSQL"])
+    if (root["MySQL"])
     {
         config_data.dbms_type = "MySQL";
         config_data.db_name = root["MySQL"]["db_name"].asString().c_str();

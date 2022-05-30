@@ -156,7 +156,7 @@ int Admin::_add_user_mysql(users_t &user)
 
 int Admin::delete_user(users_t &user)
 {
-    int error = this->_delete_user_psql(user);
+    int error;// = this->_delete_user_psql(user);
     error = this->_delete_user_mysql(user);
     return error;
 }
@@ -173,8 +173,17 @@ int Admin::_delete_user_psql(users_t &user)
     }
 
     try{
+        users_t del_user;
         pqxx::work worker(*_connect_psql);
-        worker.exec("UPDATE ppo.passwords.users SET delete = true WHERE login LIKE '%" + user.login + "';");
+        pqxx::result response = worker.exec("SELECT * FROM ppo.passwords.users WHERE login = '" + user.login + "';");
+
+        del_user.login = response[0][0].c_str();
+        del_user.password = response[0][1].c_str();
+        del_user.is_blocked = response[0][2].c_str();
+
+        worker.exec("DELETE FROM ppo.passwords.users WHERE login = '" + user.login + "';");
+        worker.exec("insert into ppo.passwords.deleted_users values ('" + del_user.login + "', '" + del_user.password + "', false);");
+        //worker.exec("UPDATE ppo.passwords.users SET delete = true WHERE login = '" + user.login + "';");
         worker.commit();
     }
     catch(std::exception const &e){
@@ -198,9 +207,22 @@ int Admin::_delete_user_mysql(users_t &user)
 
     try{
         sql::Statement *stmt;
+        sql::ResultSet  *res;
+        users_t del_user;
         stmt = _connect_mysql->createStatement();
         stmt->execute("use ppo");
-        stmt->execute("update ppo.users set deleted = true where login = '" + user.login + "'");
+        res = stmt->executeQuery("select * from ppo.users where login = '" + user.login + "';");
+        res->next();del_user.login = res->getString("login");
+        del_user.password = res->getString("password");
+        del_user.is_blocked = res->getString("locked");
+
+        //std::cout << del_user.login;*/
+
+        stmt->execute("insert into ppo.deleted_users (login, password, locked) values ('" + del_user.login + "', '" + del_user.password + "', " + del_user.is_blocked + ");");
+        stmt->execute("delete from ppo.users where login = '" + user.login + "';");
+
+        //delete res;
+        //delete stmt;
     }
     catch(std::exception const &e){
         std::cerr << e.what() << '\n';
