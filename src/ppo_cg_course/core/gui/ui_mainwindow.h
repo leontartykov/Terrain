@@ -18,6 +18,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
@@ -74,6 +75,7 @@ public:
     QLabel *label_9;
     QDoubleSpinBox *spinbox_frequency;
     QSpacerItem *verticalSpacer;
+    QPushButton *black_white_color;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_3;
     QLabel *label_23;
@@ -355,6 +357,11 @@ public:
 
         verticalLayout_2->addItem(verticalSpacer);
 
+        black_white_color = new QPushButton(tab);
+        black_white_color->setObjectName(QString::fromUtf8("black_white_color"));
+
+        verticalLayout_2->addWidget(black_white_color);
+
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
@@ -469,6 +476,7 @@ public:
 " \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "\320\227\320\265\321\200\320\275\320\276", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "\320\247\320\260\321\201\321\202\320\276\321\202\320\260", nullptr));
+        black_white_color->setText(QCoreApplication::translate("MainWindow", "\320\247\320\265\321\200\320\275\320\276-\320\261\320\265\320\273\321\213\320\271", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "\320\233\320\260\320\275\320\264\321\210\320\260\321\204\321\202", nullptr));
         label_23->setText(QCoreApplication::translate("MainWindow", "\320\237\320\276\320\267\320\270\321\206\320\270\321\217 \320\270\321\201\321\202\320\276\321\207\320\275\320\270\320\272\320\260\n"
 "\320\276\321\201\320\262\320\265\321\211\320\265\320\275\320\270\321\217", nullptr));

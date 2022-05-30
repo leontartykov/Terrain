@@ -43,6 +43,7 @@ class MainWindow: public QMainWindow
         void change_noise_parametrs();
 
         void scale_landscape();
+        void change_color_to_black_white();
 };
 
 #endif

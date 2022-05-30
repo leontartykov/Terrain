@@ -545,6 +545,13 @@
             </property>
            </spacer>
           </item>
+          <item>
+           <widget class="QPushButton" name="black_white_color">
+            <property name="text">
+             <string>Черно-белый</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="tab_2">

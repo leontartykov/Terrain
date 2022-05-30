@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent):
     QObject::connect(ui->spinbox_height_landscape, SIGNAL(valueChanged(int)), this, SLOT(change_noise_parametrs()));
 
     QObject::connect(ui->spinbox_scale, SIGNAL(valueChanged(double)), this, SLOT(scale_landscape()));
+    QObject::connect(ui->black_white_color, SIGNAL(released()), this, SLOT(change_color_to_black_white()));
 
     meta_data_t scene_meta_data = {.octaves = ui->spinbox_octaves->value(),
                                                 .gain = ui->spinbox_gain->value(),
@@ -61,7 +62,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::rotate_terrain()
 {
-    std::cout << "rotate_angles.\n";
     Terrain* terrain = _scene.get_terrain();
 
     rotate_t rotate_angles, rotate_angles_landscape = terrain->get_rotate_angles();
@@ -155,5 +155,11 @@ void MainWindow::scale_landscape()
     _scene.set_terrain(terrain);
     _scene.set_zbuffer(zbuffer);
 
+    _scene.draw_scene(scene, view);
+}
+
+void MainWindow::change_color_to_black_white()
+{
+    _scene.convert_color_to_black_and_white();
     _scene.draw_scene(scene, view);
 }
